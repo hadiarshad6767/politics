@@ -13,10 +13,12 @@ class LoginButton extends StatelessWidget {
         height: 1.4 * (MediaQuery.of(context).size.height / 20),
         width: 5 * (MediaQuery.of(context).size.width / 10),
         margin: const EdgeInsets.only(bottom: 20),
-        child: RawMaterialButton(
-            fillColor: const Color(0xFFe9533c),
+        // ignore: deprecated_member_use
+        child: RaisedButton(
+            elevation: 5,
+            color: const Color(0xFFe9533c),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             onPressed: onPressed,
             child: Text(
               TextButton,

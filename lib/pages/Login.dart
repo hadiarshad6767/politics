@@ -5,7 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:qamar_zaman_kaira/pages/forgotpassword.dart';
 import 'package:qamar_zaman_kaira/pages/signup.dart';
 import 'package:qamar_zaman_kaira/pages/button.dart';
+import 'package:qamar_zaman_kaira/pages/splash.dart';
 import 'package:qamar_zaman_kaira/theme.dart';
+
+import '../ApiServices/LoginService.dart';
+import '../model/model.dart';
+import 'Home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -14,6 +19,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  LoginService loginservice = LoginService();
   bool passwordObsecured = true;
   get style => null;
   late String email, password;
@@ -43,6 +49,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget _BuildContainer() {
+    LoginRequestModel? loginrequest = LoginRequestModel();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -83,7 +90,22 @@ class _LoginState extends State<Login> {
                 LoginButton(
                     TextButton: 'Login',
                     onPressed: () {
-                      print("hello");
+                      loginrequest.username = myControllerUsername.text;
+                      loginrequest.password = myControllerPassword.text;
+                      setState(() {
+                        print("splash");
+                        SplashScreen();
+                      });
+                      loginservice.Login(loginrequest).then((value) {
+                        if (value.token != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          );
+                        } else {
+                          print(value.message);
+                        }
+                      });
                     }),
                 // // _buildLoginButton(),
               ],
