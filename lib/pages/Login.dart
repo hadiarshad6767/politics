@@ -11,6 +11,7 @@ import 'package:qamar_zaman_kaira/theme.dart';
 import '../ApiServices/LoginService.dart';
 import '../model/model.dart';
 import 'Home.dart';
+import 'loading.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _LoginState extends State<Login> {
   final myControllerUsername = TextEditingController();
   final myControllerPassword = TextEditingController();
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  bool loading = false;
 
   Widget _buildlogo() {
     return Row(
@@ -92,10 +94,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       loginrequest.username = myControllerUsername.text;
                       loginrequest.password = myControllerPassword.text;
-                      setState(() {
-                        print("splash");
-                        SplashScreen();
-                      });
+                      setState(() => loading = true);
                       loginservice.Login(loginrequest).then((value) {
                         if (value.token != null) {
                           Navigator.push(
@@ -323,36 +322,38 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Color(0xFFf2f3f5),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.5,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFe9533c),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(70),
-                    bottomRight: Radius.circular(70),
+    return loading
+        ? Loading()
+        : SafeArea(
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Color(0xFFf2f3f5),
+              body: Stack(
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFe9533c),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(70),
+                          bottomRight: Radius.circular(70),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _buildlogo(),
+                      _BuildContainer(),
+                      _SignUpButton(),
+                    ],
+                  ),
+                ],
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildlogo(),
-                _BuildContainer(),
-                _SignUpButton(),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qamar_zaman_kaira/pages/loading.dart';
 
 import 'package:qamar_zaman_kaira/pages/splash.dart';
 
