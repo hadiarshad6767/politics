@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, annotate_overrides
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:qamar_zaman_kaira/Widgets/logo.dart';
 import 'package:qamar_zaman_kaira/pages/member.dart';
+import 'package:qamar_zaman_kaira/theme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -28,28 +31,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFFec6753), Color(0xFFda3218)])),
+              colors: [sPlash2, sPlash1])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
           child: Column(
+            // ignore: prefer_const_literals_to_create_immutables
             children: [
-              //  CustomButton(onPressed: (){print('hadi');},),
-              Expanded(child: _getLogo()),
+              Expanded(child: Logo()),
+              Center(
+                  child: SizedBox(
+                      child:
+                          SpinKitChasingDots(color: kWhiteColor, size: 20.0))),
               SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
             ],
           ),
@@ -59,15 +58,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-Widget _getLogo() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Image.asset(
-        'assets/images/k.png',
-        height: 150,
-        width: 150,
-      ),
-    ],
-  );
-}
+// Widget _getLogo() {
+//   return Column(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       Image.asset(
+//         'assets/images/k.png',
+//         height: 150,
+//         width: 150,
+//       ),
+//     ],
+//   );
+// }

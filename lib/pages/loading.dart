@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -12,7 +10,7 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         color: kPrimaryColor,
-        child: const Center(
+        child: Center(
           child: SpinKitChasingDots(color: kWhiteColor, size: 30.0),
         ));
   }

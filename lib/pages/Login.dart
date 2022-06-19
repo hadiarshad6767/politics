@@ -2,15 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:qamar_zaman_kaira/pages/forgotpassword.dart';
 import 'package:qamar_zaman_kaira/pages/signup.dart';
-import 'package:qamar_zaman_kaira/pages/button.dart';
-import 'package:qamar_zaman_kaira/pages/splash.dart';
-import 'package:qamar_zaman_kaira/theme.dart';
 
+import 'package:qamar_zaman_kaira/theme.dart';
 import '../ApiServices/LoginService.dart';
+import '../Widgets/Login_form.dart';
+import '../Widgets/Signuo.dart';
+import '../Widgets/button.dart';
+
+import '../Widgets/container.dart';
+import '../Widgets/hover.dart';
+import '../Widgets/logo.dart';
 import '../model/model.dart';
 import 'Home.dart';
+import 'button.dart';
+import 'forgotpassword.dart';
 import 'loading.dart';
 
 class Login extends StatefulWidget {
@@ -89,23 +95,35 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 5,
                 ),
+
                 LoginButton(
-                    TextButton: 'Login',
-                    onPressed: () {
-                      loginrequest.username = myControllerUsername.text;
-                      loginrequest.password = myControllerPassword.text;
-                      setState(() => loading = true);
-                      loginservice.Login(loginrequest).then((value) {
-                        if (value.token != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
-                        } else {
-                          print(value.message);
-                        }
-                      });
-                    }),
+                  TextButton: 'Login',
+                  onPressed: () {
+                    loginrequest.username = myControllerUsername.text;
+                    loginrequest.password = myControllerPassword.text;
+                    setState(() => loading = true);
+                    loginservice.login(loginrequest).then((value) {
+                      if (value.token != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                        setState(() {
+                          loading = false;
+                        });
+                      } else {
+                        print(value.message);
+                        setState(() => loading = false);
+                        final snakbar =
+                            SnackBar(content: Text(value.message.toString()));
+                        ScaffoldMessenger.of(context).showSnackBar(snakbar);
+                      }
+                    });
+                  },
+                  colorB: kPrimaryColor,
+                  colorT: kWhiteColor,
+                ),
+
                 // // _buildLoginButton(),
               ],
             ),
@@ -357,3 +375,150 @@ class _LoginState extends State<Login> {
           );
   }
 }
+
+
+// class Login extends StatefulWidget {
+//   const Login({Key? key}) : super(key: key);
+//   @override
+//   State<Login> createState() => _LoginState();
+// }
+
+// class _LoginState extends State<Login> {
+//   final style = TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
+//   final myControllerUsername = TextEditingController();
+//   final myControllerPassword = TextEditingController();
+//   LoginRequestModel loginrequest = LoginRequestModel();
+//   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+//   bool loading = false;
+
+//   Widget _BuildContainer() {
+//     return Material(
+//       child: Container(
+//         alignment: Alignment.centerLeft,
+//         height: MediaQuery.of(context).size.height * 0.45,
+//         width: MediaQuery.of(context).size.width * 0.8,
+//         decoration: BoxDecoration(
+//             color: kWhiteColor,
+//             borderRadius: const BorderRadius.all(
+//               Radius.circular(20),
+//             )),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             Text(
+//               'Login Here',
+//               style: GoogleFonts.poppins(
+//                 textStyle: style,
+//                 fontSize: 25,
+//                 fontWeight: FontWeight.w600,
+//                 letterSpacing: 1,
+//                 color: kBlackColor,
+//               ),
+//             ),
+//             LogInForm(
+//                 controllerUsername: myControllerUsername,
+//                 controllerPassword: myControllerPassword),
+//             Align(
+//               alignment: Alignment.topLeft,
+//               child: Padding(
+//                 padding: const EdgeInsets.all(10),
+//                 child: InkWellCustom(
+//                     TextSimple: 'Forgot Password?',
+//                     Textsize: 14,
+//                     Hoversize: 14,
+//                     TextColor: kDarkGreyColor,
+//                     HoverColor: kPrimaryColor),
+//               ),
+//             ),
+//             const SizedBox(
+//               height: 5,
+//             ),
+
+//             PrimaryButton(
+//                 TextButton: "Login",
+//                 ButtonColor: kPrimaryColor,
+//                 TextColor: kWhiteColor,
+//                 onPressed: () {
+//                   setState(() {
+//                     loading = true;
+//                   });
+//                   LoginService login = LoginService();
+//                   loginrequest.username = myControllerUsername.text;
+//                   loginrequest.password = myControllerPassword.text;
+//                   login.Login(loginrequest).then((value) {
+//                     if (value.token != null) {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(builder: (context) => HomePage()),
+//                       );
+//                       setState(() {
+//                         loading = false;
+//                       });
+//                     } else {
+//                       print(value.message);
+//                       setState(() => loading = false);
+//                       final snakbar =
+//                           SnackBar(content: Text(value.message.toString()));
+//                       ScaffoldMessenger.of(context).showSnackBar(snakbar);
+//                     }
+//                   });
+//                 }),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return loading
+//         ? Loading()
+//         : SingleChildScrollView(
+//             scrollDirection: Axis.vertical,
+//             child: Container(
+//                 decoration: BoxDecoration(color: kPrimaryWhiteColor),
+//                 child: Stack(
+//                   children: <Widget>[
+//                     SizedBox(
+//                       height: MediaQuery.of(context).size.height * 0.5,
+//                       width: MediaQuery.of(context).size.width,
+//                       child: Container(
+//                         decoration: BoxDecoration(
+//                           color: kPrimaryColor,
+//                           borderRadius: BorderRadius.only(
+//                             bottomLeft: Radius.circular(70),
+//                             bottomRight: Radius.circular(70),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     Column(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         SizedBox(height: 50),
+//                         Logo(),
+//                         LoginContainer(
+//                             loading: loading,
+//                             controllerUsername: myControllerUsername,
+//                             controllerPassword: myControllerPassword),
+
+//                         // _BuildContainer(),
+//                         ShiftCustom(
+//                             SimpleText: 'Dont have an account?',
+//                             TextColor: kZambeziColor,
+//                             InkText: 'Sign Up',
+//                             InkTextColor: kPrimaryColor,
+//                             InkTextHoverColor: sPlash2,
+//                             InkTextSize: 16,
+//                             InkTextHoverSize: 16),
+//                         // _SignUpButton(),
+//                         SizedBox(height: 100)
+//                       ],
+//                     ),
+//                   ],
+//                 ))
+//             // ),
+//             );
+//   }
+// }

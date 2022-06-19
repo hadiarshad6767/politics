@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginButton extends StatelessWidget {
-  final Color colorB;
-  final Color colorT;
+class PrimaryButton extends StatelessWidget {
+  final Color ButtonColor;
+  final Color TextColor;
   final GestureTapCallback onPressed;
   final String TextButton;
-  const LoginButton(
+  const PrimaryButton(
       {Key? key,
-      required this.colorB,
-      required this.colorT,
+      required this.ButtonColor,
+      required this.TextColor,
       required this.onPressed,
       required this.TextButton})
       : super(key: key);
@@ -18,12 +18,12 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 1.4 * (MediaQuery.of(context).size.height / 20),
-        width: 5 * (MediaQuery.of(context).size.width / 10),
+        width: 5 * (MediaQuery.of(context).size.width / 7),
         margin: const EdgeInsets.only(bottom: 20),
         // ignore: deprecated_member_use
         child: RaisedButton(
             elevation: 5,
-            color: colorB,
+            color: ButtonColor,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             onPressed: onPressed,
@@ -31,10 +31,10 @@ class LoginButton extends StatelessWidget {
               TextButton,
               style: GoogleFonts.poppins(
                 textStyle: GoogleFonts.poppins(),
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1,
-                color: colorT,
+                color: TextColor,
               ),
             )));
   }
