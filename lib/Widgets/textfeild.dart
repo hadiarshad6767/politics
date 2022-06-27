@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
+import 'hover.dart';
 
 class TextFieldF extends StatefulWidget {
   final IconData iconI;
@@ -10,6 +11,7 @@ class TextFieldF extends StatefulWidget {
   final int? maxLength;
   final String? hintText;
   final String? labelText;
+  final String ForgetlabelText;
   final String? helperText;
   final TextEditingController? controller;
   final FormFieldSetter<String>? onSaved;
@@ -26,6 +28,7 @@ class TextFieldF extends StatefulWidget {
     this.hintText,
     this.controller,
     this.labelText,
+    required this.ForgetlabelText,
     this.helperText,
     this.onSaved,
     this.validator,
@@ -54,61 +57,39 @@ class _TextFieldFState extends State<TextFieldF> {
         validator: widget.validator,
         // onFieldSubmitted: widget.onFieldSubmitted,
         decoration: InputDecoration(
-            prefixIcon: Icon(
-              widget.iconI,
-              color: kPrimaryColor,
-            ),
-            labelText: widget.labelText,
-            labelStyle: TextStyle(
+          // suffix: InkWellCustom(
+          //     TextSimple: widget.ForgetlabelText,
+          //     Textsize: 10,
+          //     Hoversize: 10,
+          //     TextColor: kPrimaryColor,
+          //     HoverColor: kPrimaryColor),
+          prefixIcon: Icon(widget.iconI, color: kPrimaryColor, size: 24),
+          labelText: widget.labelText,
+          labelStyle: TextStyle(
               color: kTextFieldColor,
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: kPrimaryColor),
-            ),
-            suffixIcon: icon
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscuretext = !obscuretext;
-                      });
-                    },
-                    icon: obscuretext
-                        ? Icon(
-                            Icons.visibility_off,
-                            color: kTextFieldColor,
-                          )
-                        : Icon(
-                            Icons.visibility,
-                            color: kPrimaryColor,
-                          ),
-                  )
-                : null));
-
-    // decoration: InputDecoration(
-    //     labelText: widget.labelText,
-    //     labelStyle: const TextStyle(
-    //       color: kTextFieldColor,
-    //     ),
-    //     focusedBorder: const UnderlineInputBorder(
-    //       borderSide: BorderSide(color: kPrimaryColor),
-    //     ),
-    //     suffixIcon: icon
-    //         ? IconButton(
-    //             onPressed: () {
-    //               setState(() {
-    //                 obscuretext = !obscuretext;
-    //               });
-    //             },
-    //             icon: obscuretext
-    //                 ? const Icon(
-    //                     Icons.visibility_off,
-    //                     color: kTextFieldColor,
-    //                   )
-    //                 : const Icon(
-    //                     Icons.visibility,
-    //                     color: kPrimaryColor,
-    //                   ),
-    //           )
-    //         : null));
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: kTextFieldColor),
+          ),
+          suffixIcon: icon
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      obscuretext = !obscuretext;
+                    });
+                  },
+                  icon: obscuretext
+                      ? Icon(
+                          Icons.visibility_off,
+                          color: kTextFieldColor,
+                        )
+                      : Icon(
+                          Icons.visibility,
+                          color: kPrimaryColor,
+                        ),
+                )
+              : null,
+        ));
   }
 }

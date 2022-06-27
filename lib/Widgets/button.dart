@@ -17,15 +17,15 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 1.4 * (MediaQuery.of(context).size.height / 20),
-        width: 5 * (MediaQuery.of(context).size.width / 7),
+        height: 1.4 * (MediaQuery.of(context).size.height / 25),
+        width: 5 * (MediaQuery.of(context).size.width / 11),
         margin: const EdgeInsets.only(bottom: 20),
         // ignore: deprecated_member_use
         child: RaisedButton(
             elevation: 5,
             color: ButtonColor,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
             onPressed: onPressed,
             child: Text(
               TextButton,

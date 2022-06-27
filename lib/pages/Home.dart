@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import '../ApiServices/LoginService.dart';
 import '../Widgets/navbar.dart';
+import '../Widgets/sidebar.dart';
 import '../theme.dart';
 
 class Home extends StatefulWidget {
-  //LoginService service;
-  Home({Key? key
-      //required this.service
-      })
-      : super(key: key);
+  LoginService service;
+  Home({Key? key, required this.service}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -23,7 +18,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: SideBar(service: this.service),
+      drawer: SideBar(service: this.widget.service),
       appBar: AppBar(
         title: Text("Kaira's Group"),
         centerTitle: true,

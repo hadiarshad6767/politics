@@ -7,12 +7,14 @@ import 'package:qamar_zaman_kaira/pages/signup.dart';
 import 'package:qamar_zaman_kaira/theme.dart';
 import '../ApiServices/LoginService.dart';
 import '../Widgets/Login_form.dart';
-import '../Widgets/Signuo.dart';
+//import '../Widgets/Signuo.dart';
 import '../Widgets/button.dart';
 
-import '../Widgets/container.dart';
-import '../Widgets/hover.dart';
-import '../Widgets/logo.dart';
+// import '../Widgets/container.dart';
+// import '../Widgets/hover.dart';
+// import '../Widgets/logo.dart';
+import '../Widgets/navbar.dart';
+import '../Widgets/sidebar.dart';
 import '../model/model.dart';
 import 'Home.dart';
 import 'button.dart';
@@ -26,7 +28,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  LoginService loginservice = LoginService();
+  LoginService login = LoginService();
+  // LoginService loginservice = LoginService();
   bool passwordObsecured = true;
   get style => null;
   late String email, password;
@@ -58,79 +61,224 @@ class _LoginState extends State<Login> {
 
   Widget _BuildContainer() {
     LoginRequestModel? loginrequest = LoginRequestModel();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            width: MediaQuery.of(context).size.width * 0.8,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Login Here',
-                      style: GoogleFonts.poppins(
-                        textStyle: style,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1,
-                        color: Color.fromARGB(255, 28, 28, 28),
-                      ),
-                    ),
-                  ],
-                ),
-                _buildEmailRow(),
-                _ForgotPasswordButton(),
-                SizedBox(
-                  height: 5,
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        // height: MediaQuery.of(context).size.height * 0.45,
+        // width: MediaQuery.of(context).size.width * 0.8,
+        decoration: BoxDecoration(
+            color: kWhiteColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
+            )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // Text(
+            //   'Login Here',
+            //   style: GoogleFonts.poppins(
+            //     textStyle: style,
+            //     fontSize: 25,
+            //     fontWeight: FontWeight.w600,
+            //     letterSpacing: 1,
+            //     color: kBlackColor,
+            //   ),
+            // ),
+            LogInForm(
+                controllerUsername: myControllerUsername,
+                controllerPassword: myControllerPassword),
 
-                LoginButton(
-                  TextButton: 'Login',
-                  onPressed: () {
-                    loginrequest.username = myControllerUsername.text;
-                    loginrequest.password = myControllerPassword.text;
-                    setState(() => loading = true);
-                    loginservice.login(loginrequest).then((value) {
-                      if (value.token != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                        );
+            // Align(
+            //   alignment: Alignment.topLeft,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(10),
+            //     child: InkWellCustom(
+            //         TextSimple: 'Forgot Password?',
+            //         Textsize: 14,
+            //         Hoversize: 14,
+            //         TextColor: kDarkGreyColor,
+            //         HoverColor: kPrimaryColor),
+            //   ),
+            // ),
+            const SizedBox(
+              height: 5,
+            ),
+
+            Container(
+              // clipBehavior: Clip.hardEdge,
+              //height: 100,
+              width: 397,
+              child: Row(
+                children: [
+                  PrimaryButton(
+                      TextButton: "Signup",
+                      ButtonColor: kZambeziColor,
+                      TextColor: kWhiteColor,
+                      onPressed: () {
                         setState(() {
-                          loading = false;
+                          loading = true;
                         });
-                      } else {
-                        print(value.message);
-                        setState(() => loading = false);
-                        final snakbar =
-                            SnackBar(content: Text(value.message.toString()));
-                        ScaffoldMessenger.of(context).showSnackBar(snakbar);
-                      }
-                    });
-                  },
-                  colorB: kPrimaryColor,
-                  colorT: kWhiteColor,
-                ),
+                        // widget.onChange(true);
+                        LoginService login = LoginService();
+                        loginrequest.username = myControllerUsername.text;
+                        loginrequest.password = myControllerPassword.text;
+                        login.login(loginrequest).then((value) {
+                          if (value.token != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Home(service: login)),
+                            );
+                            setState(() {
+                              loading = false;
+                            });
+                          } else {
+                            print(value.message);
+                            setState(() => loading = false);
+                            final snakbar = SnackBar(
+                                content: Text(value.message.toString()));
+                            ScaffoldMessenger.of(context).showSnackBar(snakbar);
+                          }
+                        });
+                      }),
+                  PrimaryButton(
+                      TextButton: "Login",
+                      ButtonColor: kPrimaryColor,
+                      TextColor: kWhiteColor,
+                      onPressed: () {
+                        setState(() {
+                          loading = true;
+                        });
+                        // widget.onChange(true);
 
-                // // _buildLoginButton(),
-              ],
-            ),
-          ),
+                        loginrequest.username = myControllerUsername.text;
+                        loginrequest.password = myControllerPassword.text;
+                        login.login(loginrequest).then((value) {
+                          if (value.token != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Home(service: login)),
+                            );
+                            setState(() {
+                              loading = false;
+                            });
+                          } else {
+                            print(value.message);
+                            setState(() => loading = false);
+                            final snakbar = SnackBar(
+                                content: Text(value.message.toString()));
+                            ScaffoldMessenger.of(context).showSnackBar(snakbar);
+                          }
+                        });
+                      }),
+                ],
+              ),
+            )
+
+            // LoginButton(
+            //     ButtonColor: kPrimaryColor,
+            //     T: kWhiteColor,
+            //     TextButton: 'Login',
+            //     onPressed: () {
+
+            //       loginrequest.username = myControllerUsername.text;
+            //       loginrequest.password = myControllerPassword.text;
+            //       setState(() => loading = true);
+            //       loginservice.Login(loginrequest).then((value) {
+            //         if (value.token != null) {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(builder: (context) => HomePage()),
+            //           );
+            //         } else {
+            //           print(value.message);
+            //         }
+
+            //       }
+
+            // );
+            //     }),
+          ],
         ),
-      ],
+      ),
     );
+
+    // Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: <Widget>[
+    //     ClipRRect(
+    //       borderRadius: BorderRadius.all(
+    //         Radius.circular(20),
+    //       ),
+    //       child: Container(
+    //         height: MediaQuery.of(context).size.height * 0.5,
+    //         width: MediaQuery.of(context).size.width * 0.8,
+    //         decoration: BoxDecoration(
+    //           color: Colors.white,
+    //         ),
+    //         child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           crossAxisAlignment: CrossAxisAlignment.center,
+    //           children: <Widget>[
+    //             Row(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: <Widget>[
+    //                 // Text(
+    //                 //   'Login Here',
+    //                 //   style: GoogleFonts.poppins(
+    //                 //     textStyle: style,
+    //                 //     fontSize: 25,
+    //                 //     fontWeight: FontWeight.w700,
+    //                 //     letterSpacing: 1,
+    //                 //     color: Color.fromARGB(255, 28, 28, 28),
+    //                 //   ),
+    //                 // ),
+    //               ],
+    //             ),
+    //             _buildEmailRow(),
+    //             _ForgotPasswordButton(),
+    //             SizedBox(
+    //               height: 5,
+    //             ),
+
+    //             LoginButton(
+    //               TextButton: 'Login',
+    //               onPressed: () {
+    //                 loginrequest.username = myControllerUsername.text;
+    //                 loginrequest.password = myControllerPassword.text;
+    //                 setState(() => loading = true);
+    //                 loginservice.login(loginrequest).then((value) {
+    //                   if (value.token != null) {
+    //                     Navigator.push(
+    //                       context,
+    //                       MaterialPageRoute(builder: (context) => Home()),
+    //                     );
+    //                     setState(() {
+    //                       loading = false;
+    //                     });
+    //                   } else {
+    //                     print(value.message);
+    //                     setState(() => loading = false);
+    //                     final snakbar =
+    //                         SnackBar(content: Text(value.message.toString()));
+    //                     ScaffoldMessenger.of(context).showSnackBar(snakbar);
+    //                   }
+    //                 });
+    //               },
+    //               colorB: kPrimaryColor,
+    //               colorT: kWhiteColor,
+    //             ),
+
+    //             // // _buildLoginButton(),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 
   Widget _buildEmailRow() {
@@ -344,33 +492,57 @@ class _LoginState extends State<Login> {
         ? Loading()
         : SafeArea(
             child: Scaffold(
+              drawer: SideBar(service: login),
+              appBar: AppBar(
+                title: Text("Kaira's Group",
+                    style: TextStyle(color: kPrimaryColor)),
+                centerTitle: true,
+                backgroundColor: kPrimaryWhiteColor,
+                actions: <Widget>[
+                  PopupMenuButton(
+                    itemBuilder: ((context) => [
+                          PopupMenuItem(
+                            child: Text('Logout'),
+                          )
+                        ]),
+                  )
+                ],
+              ),
               resizeToAvoidBottomInset: false,
-              backgroundColor: Color(0xFFf2f3f5),
+              backgroundColor: kPrimaryColor,
               body: Stack(
                 children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: MediaQuery.of(context).size.width,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFFe9533c),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(70),
-                          bottomRight: Radius.circular(70),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   height: MediaQuery.of(context).size.height * 0.5,
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       color: Color(0xFFe9533c),
+                  //       borderRadius: BorderRadius.only(
+                  //         bottomLeft: Radius.circular(70),
+                  //         bottomRight: Radius.circular(70),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      _buildlogo(),
+                      //    _buildlogo(),
                       _BuildContainer(),
-                      _SignUpButton(),
+                      //  _SignUpButton(),
                     ],
                   ),
                 ],
               ),
+              floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.home),
+                onPressed: () {},
+                backgroundColor: kPrimaryColor,
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              bottomNavigationBar: BottomNavBar(),
             ),
           );
   }

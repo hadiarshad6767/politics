@@ -30,6 +30,7 @@ class _LogInFormState extends State<LogInForm> {
                 controller: widget.controllerUsername,
                 obscuretext: false,
                 icon: false,
+                ForgetlabelText: 'Forget Username?',
                 //onSaved: (input) => _username = input,
                 validator: (input) {
                   if (input == null || input.contains('@') || input.isEmpty) {
@@ -46,6 +47,7 @@ class _LogInFormState extends State<LogInForm> {
                 controller: widget.controllerPassword,
                 obscuretext: true,
                 icon: true,
+                ForgetlabelText: 'Forget Password?',
                 //onSaved: (input) => _username = input,
                 validator: (input) {
                   if (input == null || input.length <= 3 || input.isEmpty) {

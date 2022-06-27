@@ -48,16 +48,16 @@ class _LoginContainerState extends State<LoginContainer> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Login Here',
-                style: GoogleFonts.poppins(
-                  textStyle: style,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1,
-                  color: kBlackColor,
-                ),
-              ),
+              // Text(
+              //   'Login Here',
+              //   style: GoogleFonts.poppins(
+              //     textStyle: style,
+              //     fontSize: 25,
+              //     fontWeight: FontWeight.w600,
+              //     letterSpacing: 1,
+              //     color: kBlackColor,
+              //   ),
+              // ),
               LogInForm(
                   controllerUsername: widget.controllerUsername,
                   controllerPassword: widget.controllerPassword),
@@ -93,7 +93,8 @@ class _LoginContainerState extends State<LoginContainer> {
                       if (value.token != null) {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(
+                              builder: (context) => Home(service: login)),
                         );
                         setState(() {
                           widget.loading = false;
