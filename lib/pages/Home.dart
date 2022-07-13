@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import '../ApiServices/LoginService.dart';
+import 'package:localstorage/localstorage.dart';
+import '../ApiServices/LoginTokenService.dart';
+import '../LocalStorage/localStorage.dart';
 import '../Widgets/navbar.dart';
 import '../Widgets/sidebar.dart';
 import '../theme.dart';
 
 class Home extends StatefulWidget {
-  LoginService service;
-  Home({Key? key, required this.service}) : super(key: key);
+  // LoginTokenService service;
+  // localstorageCustom loc = localstorageCustom();
+  Home({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -14,11 +19,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   _HomeState();
+  localstorageCustom loc = localstorageCustom();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(service: this.widget.service),
+      drawer: SideBar(
+          LocalStorageName: loc.SideBarStorage,
+          LocalStorageName1: loc.UserInfoStorage,
+          user_info: true),
       appBar: AppBar(
         title: Text("Kaira's Group"),
         centerTitle: true,
@@ -39,7 +48,9 @@ class _HomeState extends State<Home> {
         backgroundColor: kPrimaryColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(
+        LocalStorageName: loc.BottomNavBarStorage,
+      ),
       body: SingleChildScrollView(
         child: Column(),
       ),

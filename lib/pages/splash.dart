@@ -6,6 +6,9 @@ import 'package:qamar_zaman_kaira/Widgets/logo.dart';
 import 'package:qamar_zaman_kaira/pages/Login.dart';
 import 'package:qamar_zaman_kaira/theme.dart';
 
+import '../ApiServices/Privileges.dart';
+import '../Widgets/error.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -14,18 +17,45 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  PrivilgeService callprivileges = PrivilgeService();
   @override
   void initState() {
-    Future.delayed(
-      Duration(seconds: 5),
-      () {
+    callprivileges.getPrivilges().then((value) {
+      if (value == 200) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => Login(),
             ));
-      },
-    );
+      } else {
+        CustomDialogBox errorDialog = CustomDialogBox(message: "Token Expire");
+
+        showDialog(
+            context: context, builder: (BuildContext context) => errorDialog);
+      }
+    });
+
+    // print(response);
+
+    // if (response == 200) {
+    //   Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => Login(),
+    //       ));
+    // } else {
+    //   print("Error: ");
+    // }
+    // Future.delayed(
+    //   Duration(seconds: 5),
+    //   () {
+    //     Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) => Login(),
+    //         ));
+    //   },
+    // );
     super.initState();
   }
 

@@ -18,14 +18,13 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 1.4 * (MediaQuery.of(context).size.height / 25),
-        width: 5 * (MediaQuery.of(context).size.width / 11),
-        margin: const EdgeInsets.only(bottom: 20),
+        width: (MediaQuery.of(context).size.width / 2.23),
+        margin: const EdgeInsets.only(bottom: 10),
         // ignore: deprecated_member_use
-        child: RaisedButton(
-            elevation: 5,
+        child: FlatButton(
             color: ButtonColor,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             onPressed: onPressed,
             child: Text(
               TextButton,

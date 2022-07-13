@@ -6,6 +6,8 @@ import 'package:qamar_zaman_kaira/pages/signup.dart';
 
 import 'package:qamar_zaman_kaira/theme.dart';
 import '../ApiServices/LoginService.dart';
+import '../ApiServices/LoginTokenService.dart';
+import '../LocalStorage/localStorage.dart';
 import '../Widgets/Login_form.dart';
 //import '../Widgets/Signuo.dart';
 import '../Widgets/button.dart';
@@ -13,6 +15,7 @@ import '../Widgets/button.dart';
 // import '../Widgets/container.dart';
 // import '../Widgets/hover.dart';
 // import '../Widgets/logo.dart';
+import '../Widgets/error.dart';
 import '../Widgets/navbar.dart';
 import '../Widgets/sidebar.dart';
 import '../model/model.dart';
@@ -20,6 +23,7 @@ import 'Home.dart';
 import 'button.dart';
 import 'forgotpassword.dart';
 import 'loading.dart';
+import 'whatsapp.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -28,8 +32,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  LoginService login = LoginService();
+  LoginTokenService logintoken = LoginTokenService();
+  LoginService userinfo = LoginService();
   // LoginService loginservice = LoginService();
+  localstorageCustom loc = localstorageCustom();
   bool passwordObsecured = true;
   get style => null;
   late String email, password;
@@ -64,143 +70,107 @@ class _LoginState extends State<Login> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        alignment: Alignment.centerLeft,
+        // alignment: Alignment.centerLeft,
         // height: MediaQuery.of(context).size.height * 0.45,
         // width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
             color: kWhiteColor,
+            border: Border.all(width: 1, color: kTextFieldColor),
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             )),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // Text(
-            //   'Login Here',
-            //   style: GoogleFonts.poppins(
-            //     textStyle: style,
-            //     fontSize: 25,
-            //     fontWeight: FontWeight.w600,
-            //     letterSpacing: 1,
-            //     color: kBlackColor,
-            //   ),
-            // ),
+          children: [
             LogInForm(
                 controllerUsername: myControllerUsername,
                 controllerPassword: myControllerPassword),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrimaryButton(
+                    TextButton: "Signup",
+                    ButtonColor: kZambeziColor,
+                    TextColor: kWhiteColor,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUp()),
+                      );
+                      // setState(() {
+                      //   loading = true;
+                      // });
+                      // // widget.onChange(true);
 
-            // Align(
-            //   alignment: Alignment.topLeft,
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(10),
-            //     child: InkWellCustom(
-            //         TextSimple: 'Forgot Password?',
-            //         Textsize: 14,
-            //         Hoversize: 14,
-            //         TextColor: kDarkGreyColor,
-            //         HoverColor: kPrimaryColor),
-            //   ),
-            // ),
-            const SizedBox(
-              height: 5,
+                      // loginrequest.username = myControllerUsername.text;
+                      // loginrequest.password = myControllerPassword.text;
+                      // logintoken.login(loginrequest).then((value) {
+                      //   if (value.token != null) {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => Home()),
+                      //     );
+                      //     setState(() {
+                      //       loading = false;
+                      //     });
+                      //   } else {
+                      //     print(value.message);
+                      //     setState(() => loading = false);
+                      //     final snakbar =
+                      //         SnackBar(content: Text(value.message.toString()));
+                      //     ScaffoldMessenger.of(context).showSnackBar(snakbar);
+                      //   }
+                      // });
+                    }),
+                PrimaryButton(
+                    TextButton: "Login",
+                    ButtonColor: kPrimaryColor,
+                    TextColor: kWhiteColor,
+                    onPressed: () {
+                      setState(() {
+                        loading = true;
+                      });
+                      // widget.onChange(true);
+
+                      loginrequest.username = myControllerUsername.text;
+                      loginrequest.password = myControllerPassword.text;
+                      logintoken.login(loginrequest).then((value) {
+                        if (value.token != null) {
+                          userinfo.loginService(value.token).then((value) {
+                            if (value == 200) {
+                              print('ok');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Home()),
+                              );
+                              setState(() {
+                                loading = false;
+                              });
+                            } else {
+                              print("Eroor11111");
+                            }
+                          });
+                        } else {
+                          print(value.message);
+                          setState(() => loading = false);
+                          CustomDialogBox errorDialog =
+                              CustomDialogBox(message: value.message);
+
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => errorDialog);
+                          // print(value.message);
+                          // setState(() => loading = false);
+                          // final snakbar =
+                          //     SnackBar(content: Text(value.message.toString()));
+                          // ScaffoldMessenger.of(context).showSnackBar(snakbar);
+                        }
+                      });
+                    }),
+              ],
             ),
-
-            Container(
-              // clipBehavior: Clip.hardEdge,
-              //height: 100,
-              width: 397,
-              child: Row(
-                children: [
-                  PrimaryButton(
-                      TextButton: "Signup",
-                      ButtonColor: kZambeziColor,
-                      TextColor: kWhiteColor,
-                      onPressed: () {
-                        setState(() {
-                          loading = true;
-                        });
-                        // widget.onChange(true);
-                        LoginService login = LoginService();
-                        loginrequest.username = myControllerUsername.text;
-                        loginrequest.password = myControllerPassword.text;
-                        login.login(loginrequest).then((value) {
-                          if (value.token != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Home(service: login)),
-                            );
-                            setState(() {
-                              loading = false;
-                            });
-                          } else {
-                            print(value.message);
-                            setState(() => loading = false);
-                            final snakbar = SnackBar(
-                                content: Text(value.message.toString()));
-                            ScaffoldMessenger.of(context).showSnackBar(snakbar);
-                          }
-                        });
-                      }),
-                  PrimaryButton(
-                      TextButton: "Login",
-                      ButtonColor: kPrimaryColor,
-                      TextColor: kWhiteColor,
-                      onPressed: () {
-                        setState(() {
-                          loading = true;
-                        });
-                        // widget.onChange(true);
-
-                        loginrequest.username = myControllerUsername.text;
-                        loginrequest.password = myControllerPassword.text;
-                        login.login(loginrequest).then((value) {
-                          if (value.token != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Home(service: login)),
-                            );
-                            setState(() {
-                              loading = false;
-                            });
-                          } else {
-                            print(value.message);
-                            setState(() => loading = false);
-                            final snakbar = SnackBar(
-                                content: Text(value.message.toString()));
-                            ScaffoldMessenger.of(context).showSnackBar(snakbar);
-                          }
-                        });
-                      }),
-                ],
-              ),
-            )
-
-            // LoginButton(
-            //     ButtonColor: kPrimaryColor,
-            //     T: kWhiteColor,
-            //     TextButton: 'Login',
-            //     onPressed: () {
-
-            //       loginrequest.username = myControllerUsername.text;
-            //       loginrequest.password = myControllerPassword.text;
-            //       setState(() => loading = true);
-            //       loginservice.Login(loginrequest).then((value) {
-            //         if (value.token != null) {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(builder: (context) => HomePage()),
-            //           );
-            //         } else {
-            //           print(value.message);
-            //         }
-
-            //       }
-
-            // );
-            //     }),
           ],
         ),
       ),
@@ -488,61 +458,88 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return loading
         ? Loading()
         : SafeArea(
             child: Scaffold(
-              drawer: SideBar(service: login),
+              drawer: SideBar(
+                LocalStorageName: loc.LoginSideBarStorage,
+                LocalStorageName1: loc.UserInfoStorage,
+                user_info: false,
+              ),
               appBar: AppBar(
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Icon(
+                        Icons.menu,
+                        color: kPrimaryColor,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      // tooltip: MaterialLocalizations.of(context)
+                      //     .openAppDrawerTooltip,
+                    );
+                  },
+                ),
                 title: Text("Kaira's Group",
                     style: TextStyle(color: kPrimaryColor)),
                 centerTitle: true,
-                backgroundColor: kPrimaryWhiteColor,
-                actions: <Widget>[
-                  PopupMenuButton(
-                    itemBuilder: ((context) => [
-                          PopupMenuItem(
-                            child: Text('Logout'),
-                          )
-                        ]),
-                  )
-                ],
+                backgroundColor: kBlackColor,
+                // actions: <Widget>[
+                //   PopupMenuButton(
+                //     color: kPrimaryColor,
+                //     itemBuilder: ((context) => [
+                //           PopupMenuItem(
+                //             child: Text('Logout'),
+                //           )
+                //         ]),
+                //   )
+                // ],
               ),
               resizeToAvoidBottomInset: false,
               backgroundColor: kPrimaryColor,
-              body: Stack(
-                children: <Widget>[
-                  // Container(
-                  //   height: MediaQuery.of(context).size.height * 0.5,
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       color: Color(0xFFe9533c),
-                  //       borderRadius: BorderRadius.only(
-                  //         bottomLeft: Radius.circular(70),
-                  //         bottomRight: Radius.circular(70),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      //    _buildlogo(),
-                      _BuildContainer(),
-                      //  _SignUpButton(),
-                    ],
-                  ),
-                ],
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 200),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.whatsapp,
+                            color: kWhiteColor,
+                            size: 50,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WhatsappPage()),
+                            );
+                          }),
+                    ),
+                    _BuildContainer(),
+                    //  _SignUpButton(),
+                  ],
+                ),
               ),
               floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.home),
                 onPressed: () {},
-                backgroundColor: kPrimaryColor,
+                backgroundColor: kBlackColor,
+                child: Icon(
+                  Icons.login,
+                  color: kPrimaryColor,
+                ),
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              bottomNavigationBar: BottomNavBar(),
+              bottomNavigationBar:
+                  BottomNavBar(LocalStorageName: loc.LoginBottomNavBarStorage),
             ),
           );
   }
