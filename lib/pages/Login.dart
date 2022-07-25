@@ -23,6 +23,7 @@ import 'Home.dart';
 import 'button.dart';
 import 'forgotpassword.dart';
 import 'loading.dart';
+import 'pollingstationpage.dart';
 import 'whatsapp.dart';
 
 class Login extends StatefulWidget {
@@ -142,9 +143,11 @@ class _LoginState extends State<Login> {
                             if (value == 200) {
                               print('ok');
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Home()),
-                              );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home())
+                                  //PollingStationPage()),
+                                  );
                               setState(() {
                                 loading = false;
                               });
@@ -544,7 +547,6 @@ class _LoginState extends State<Login> {
           );
   }
 }
-
 
 // class Login extends StatefulWidget {
 //   const Login({Key? key}) : super(key: key);

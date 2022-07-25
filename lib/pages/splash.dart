@@ -7,7 +7,9 @@ import 'package:qamar_zaman_kaira/pages/Login.dart';
 import 'package:qamar_zaman_kaira/theme.dart';
 
 import '../ApiServices/Privileges.dart';
+import '../ApiServices/pollingstation.dart';
 import '../Widgets/error.dart';
+import 'pollingstationpage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,22 +20,40 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   PrivilgeService callprivileges = PrivilgeService();
+  ElectionService electionservice = ElectionService();
   @override
   void initState() {
-    callprivileges.getPrivilges().then((value) {
-      if (value == 200) {
+    electionservice.loginService().then((value) {
+      if (value.error == null) {
+        print("ok");
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => Login(),
-            ));
+            MaterialPageRoute(builder: (context) => PollingStationPage()
+                // Login(),
+                ));
       } else {
+        print("error");
         CustomDialogBox errorDialog = CustomDialogBox(message: "Token Expire");
 
         showDialog(
             context: context, builder: (BuildContext context) => errorDialog);
       }
     });
+    // callprivileges.getPrivilges().then((value) {
+    //   if (value == 200) {
+
+    //     Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => PollingStationPage()
+    //             // Login(),
+    //             ));
+    //   } else {
+    //     CustomDialogBox errorDialog = CustomDialogBox(message: "Token Expire");
+
+    //     showDialog(
+    //         context: context, builder: (BuildContext context) => errorDialog);
+    //   }
+    // });
 
     // print(response);
 

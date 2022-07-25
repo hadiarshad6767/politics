@@ -6,7 +6,7 @@ class Settings {
   String? authBasic = 'VXNlck1hbmFnbWVudDpzZWNyZXQ=';
   String? application_CODE = 'KairaGroupMobileApp';
   int application_ID = 80;
-  String? unauthToken = 'd570b225-beba-4a52-94f8-497c408de786';
+  String? unauthToken = '73ee19f4-4908-43c5-b04f-581e19e2f5a5';
 
   String? GetAuthBasic() {
     return authBasic;
